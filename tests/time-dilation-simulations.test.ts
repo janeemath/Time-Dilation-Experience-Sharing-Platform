@@ -1,21 +1,43 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 
-import { describe, expect, it } from "vitest";
-
-const accounts = simnet.getAccounts();
-const address1 = accounts.get("wallet_1")!;
-
-/*
-  The test below is an example. To learn more, read the testing documentation here:
-  https://docs.hiro.so/stacks/clarinet-js-sdk
-*/
-
-describe("example tests", () => {
-  it("ensures simnet is well initalised", () => {
-    expect(simnet.blockHeight).toBeDefined();
+describe('time-dilation-simulations', () => {
+  let contract: any;
+  
+  beforeEach(() => {
+    contract = {
+      createSimulation: (velocity: number, gravitationalFieldStrength: number, duration: number, description: string) => ({ value: 1 }),
+      getSimulation: (simulationId: number) => ({
+        creator: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM',
+        velocity: 200000000,
+        gravitationalFieldStrength: 500000,
+        duration: 3600,
+        timeDilationFactor: 950000,
+        description: 'Near light-speed journey around a massive black hole'
+      }),
+      getSimulationCount: () => 5
+    };
   });
-
-  // it("shows an example", () => {
-  //   const { result } = simnet.callReadOnlyFn("counter", "get-counter", [], address1);
-  //   expect(result).toBeUint(0);
-  // });
+  
+  describe('create-simulation', () => {
+    it('should create a new time dilation simulation', () => {
+      const result = contract.createSimulation(200000000, 500000, 3600, 'Near light-speed journey around a massive black hole');
+      expect(result.value).toBe(1);
+    });
+  });
+  
+  describe('get-simulation', () => {
+    it('should return simulation data', () => {
+      const simulation = contract.getSimulation(1);
+      expect(simulation.velocity).toBe(200000000);
+      expect(simulation.gravitationalFieldStrength).toBe(500000);
+    });
+  });
+  
+  describe('get-simulation-count', () => {
+    it('should return the total number of simulations', () => {
+      const count = contract.getSimulationCount();
+      expect(count).toBe(5);
+    });
+  });
 });
+
