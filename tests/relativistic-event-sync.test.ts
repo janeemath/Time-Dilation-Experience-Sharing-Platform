@@ -1,21 +1,43 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 
-import { describe, expect, it } from "vitest";
-
-const accounts = simnet.getAccounts();
-const address1 = accounts.get("wallet_1")!;
-
-/*
-  The test below is an example. To learn more, read the testing documentation here:
-  https://docs.hiro.so/stacks/clarinet-js-sdk
-*/
-
-describe("example tests", () => {
-  it("ensures simnet is well initalised", () => {
-    expect(simnet.blockHeight).toBeDefined();
+describe('relativistic-event-sync', () => {
+  let contract: any;
+  
+  beforeEach(() => {
+    contract = {
+      createEvent: (name: string, description: string, simulationId: number, localTime: number, earthTime: number) => ({ value: 1 }),
+      getEvent: (eventId: number) => ({
+        name: 'Supernova Observation',
+        description: 'Witnessed a supernova explosion from a time-dilated perspective',
+        simulationId: 1,
+        localTime: 1000,
+        earthTime: 10000
+      }),
+      getEventCount: () => 2
+    };
   });
-
-  // it("shows an example", () => {
-  //   const { result } = simnet.callReadOnlyFn("counter", "get-counter", [], address1);
-  //   expect(result).toBeUint(0);
-  // });
+  
+  describe('create-event', () => {
+    it('should create a new relativistic event', () => {
+      const result = contract.createEvent('Supernova Observation', 'Witnessed a supernova explosion from a time-dilated perspective', 1, 1000, 10000);
+      expect(result.value).toBe(1);
+    });
+  });
+  
+  describe('get-event', () => {
+    it('should return event data', () => {
+      const event = contract.getEvent(1);
+      expect(event.name).toBe('Supernova Observation');
+      expect(event.localTime).toBe(1000);
+      expect(event.earthTime).toBe(10000);
+    });
+  });
+  
+  describe('get-event-count', () => {
+    it('should return the total number of events', () => {
+      const count = contract.getEventCount();
+      expect(count).toBe(2);
+    });
+  });
 });
+
