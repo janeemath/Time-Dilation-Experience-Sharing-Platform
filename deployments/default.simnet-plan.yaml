@@ -50,13 +50,18 @@ plan:
     - id: 0
       transactions:
         - emulated-contract-publish:
+            contract-name: experience-records
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/experience-records.clar
+            clarity-version: 2
+        - emulated-contract-publish:
             contract-name: time-dilation-simulations
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/time-dilation-simulations.clar
             clarity-version: 2
         - emulated-contract-publish:
-            contract-name: experience-records
+            contract-name: relativistic-event-sync
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/experience-records.clar
+            path: contracts/relativistic-event-sync.clar
             clarity-version: 2
       epoch: "2.5"
